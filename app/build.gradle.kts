@@ -33,6 +33,10 @@ android {
                 storePassword = properties.getProperty("keystore.pwd")
                 keyAlias = properties.getProperty("keystore.alias")
                 keyPassword = properties.getProperty("keystore.alias_pwd")
+                v1SigningEnabled = true
+                v2SigningEnabled = true
+                v3SigningEnabled = true
+                v4SigningEnabled = true
             }
         }
     }
