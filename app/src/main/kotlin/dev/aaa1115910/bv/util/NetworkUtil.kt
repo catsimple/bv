@@ -31,6 +31,6 @@ object NetworkUtil {
         }
     }
 
-    suspend fun isMainlandChina() = withContext(Dispatchers.IO) {
-       return@withContext true
+    suspend fun isMainlandChina(): Boolean {
+        return true
     }
