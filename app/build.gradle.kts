@@ -36,7 +36,6 @@ android {
                 v1SigningEnabled = true
                 v2SigningEnabled = true
                 v3SigningEnabled = true
-                v4SigningEnabled = true
             }
         }
     }
