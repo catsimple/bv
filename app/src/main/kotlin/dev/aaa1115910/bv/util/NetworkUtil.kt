@@ -34,3 +34,4 @@ object NetworkUtil {
     suspend fun isMainlandChina(): Boolean {
         return true
     }
+}
