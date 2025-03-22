@@ -39,7 +39,7 @@ abstract class PgcViewModel(
      * 猜你喜欢
      */
     val feedItems = mutableStateListOf<FeedListItem>()
-
+ugccomm
     /**
      * 推荐数据中会穿插排行榜，为了避免出现某一行仅出现单独几个剧集，因此将不满一行的剧集单独存起来
      */
@@ -51,9 +51,12 @@ abstract class PgcViewModel(
 
     init {
         loadMore()
+        // 禁用轮播图数据加载
+        /*
         viewModelScope.launch(Dispatchers.IO) {
             updateCarousel()
         }
+        */
     }
 
     /**
@@ -74,7 +77,8 @@ abstract class PgcViewModel(
         logger.fInfo { "Reload all $pgcType data" }
         clearAll()
         viewModelScope.launch(Dispatchers.IO) {
-            updateCarousel()
+            // 禁用轮播图更新
+            // updateCarousel()
             updateFeed()
         }
     }
