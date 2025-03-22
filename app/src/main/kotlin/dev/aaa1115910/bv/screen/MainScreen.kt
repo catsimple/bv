@@ -97,16 +97,6 @@ fun MainScreen(
         }
     }
 
-    LaunchedEffect(selectedDrawerItem) {
-        when (selectedDrawerItem) {
-            DrawerItem.Home -> mainFocusRequester.requestFocus()
-            DrawerItem.UGC -> ugcFocusRequester.requestFocus()
-            DrawerItem.PGC -> pgcFocusRequester.requestFocus()
-            DrawerItem.Search -> searchFocusRequester.requestFocus()
-            else -> {}
-        }
-    }
-    
     LaunchedEffect(Unit) {
         runCatching {
             mainFocusRequester.requestFocus()
