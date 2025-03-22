@@ -68,6 +68,7 @@ fun PgcContent(
 
     var selectedTab by remember { mutableStateOf(PgcTopNavItem.Anime) }
     var focusOnContent by remember { mutableStateOf(false) }
+    var hasFocus by remember { mutableStateOf(false) }
     val currentListOnTop by remember {
         derivedStateOf {
             with(
@@ -85,9 +86,14 @@ fun PgcContent(
         }
     }
 
-    //启动时刷新数据
     LaunchedEffect(Unit) {
 
+    }
+
+    LaunchedEffect(hasFocus) {
+        if (hasFocus) {
+            navFocusRequester.requestFocus()
+        }
     }
 
     BackHandler(focusOnContent) {
@@ -107,7 +113,8 @@ fun PgcContent(
     }
 
     Scaffold(
-        modifier = Modifier,
+        modifier = Modifier
+            .onFocusChanged { hasFocus = it.hasFocus },
         topBar = {
             TopNav(
                 modifier = Modifier
