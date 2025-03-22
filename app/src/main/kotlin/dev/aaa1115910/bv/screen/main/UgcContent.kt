@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.focusable
 import dev.aaa1115910.biliapi.entity.ugc.UgcType
 import dev.aaa1115910.bv.component.TopNav
 import dev.aaa1115910.bv.component.UgcTopNavItem
@@ -74,11 +75,6 @@ fun UgcContent(
 
     var selectedTab by remember { mutableStateOf(UgcTopNavItem.Douga) }
     var focusOnContent by remember { mutableStateOf(false) }
-
-    // 监听标签变化，确保焦点保持在导航栏上
-    LaunchedEffect(selectedTab) {
-        navFocusRequester.requestFocus(scope)
-    }
 
     //启动时刷新数据
     LaunchedEffect(Unit) {
@@ -150,37 +146,41 @@ fun UgcContent(
                 .padding(innerPadding)
                 .onFocusChanged { focusOnContent = it.hasFocus }
         ) {
-            AnimatedContent(
-                targetState = selectedTab,
-                label = "ugc animated content",
-                transitionSpec = {
-                    val coefficient = 10
-                    if (targetState.ordinal < initialState.ordinal) {
-                        fadeIn() + slideInHorizontally { -it / coefficient } togetherWith
-                                fadeOut() + slideOutHorizontally { it / coefficient }
-                    } else {
-                        fadeIn() + slideInHorizontally { it / coefficient } togetherWith
-                                fadeOut() + slideOutHorizontally { -it / coefficient }
+            Box(
+                modifier = Modifier.focusable(false)
+            ) {
+                AnimatedContent(
+                    targetState = selectedTab,
+                    label = "ugc animated content",
+                    transitionSpec = {
+                        val coefficient = 10
+                        if (targetState.ordinal < initialState.ordinal) {
+                            fadeIn() + slideInHorizontally { -it / coefficient } togetherWith
+                                    fadeOut() + slideOutHorizontally { it / coefficient }
+                        } else {
+                            fadeIn() + slideInHorizontally { it / coefficient } togetherWith
+                                    fadeOut() + slideOutHorizontally { -it / coefficient }
+                        }
                     }
-                }
-            ) { screen ->
-                when (screen) {
-                    UgcTopNavItem.Douga -> DougaContent(state = dougaState)
-                    UgcTopNavItem.Game -> GameContent(state = gameState)
-                    UgcTopNavItem.Kichiku -> KichikuContent(state = kichikuState)
-                    UgcTopNavItem.Music -> MusicContent(state = musicState)
-                    UgcTopNavItem.Dance -> DanceContent(state = danceState)
-                    UgcTopNavItem.Cinephile -> CinephileContent(state = cinephileState)
-                    UgcTopNavItem.Ent -> EntContent(state = entState)
-                    UgcTopNavItem.Knowledge -> KnowledgeContent(state = knowledgeState)
-                    UgcTopNavItem.Tech -> TechContent(state = techState)
-                    UgcTopNavItem.Information -> InformationContent(state = informationState)
-                    UgcTopNavItem.Food -> FoodContent(state = foodState)
-                    UgcTopNavItem.Life -> LifeContent(state = lifeState)
-                    UgcTopNavItem.Car -> CarContent(state = carState)
-                    UgcTopNavItem.Fashion -> FashionContent(state = fashionState)
-                    UgcTopNavItem.Sports -> SportsContent(state = sportsState)
-                    UgcTopNavItem.Animal -> AnimalContent(state = animalState)
+                ) { screen ->
+                    when (screen) {
+                        UgcTopNavItem.Douga -> DougaContent(state = dougaState)
+                        UgcTopNavItem.Game -> GameContent(state = gameState)
+                        UgcTopNavItem.Kichiku -> KichikuContent(state = kichikuState)
+                        UgcTopNavItem.Music -> MusicContent(state = musicState)
+                        UgcTopNavItem.Dance -> DanceContent(state = danceState)
+                        UgcTopNavItem.Cinephile -> CinephileContent(state = cinephileState)
+                        UgcTopNavItem.Ent -> EntContent(state = entState)
+                        UgcTopNavItem.Knowledge -> KnowledgeContent(state = knowledgeState)
+                        UgcTopNavItem.Tech -> TechContent(state = techState)
+                        UgcTopNavItem.Information -> InformationContent(state = informationState)
+                        UgcTopNavItem.Food -> FoodContent(state = foodState)
+                        UgcTopNavItem.Life -> LifeContent(state = lifeState)
+                        UgcTopNavItem.Car -> CarContent(state = carState)
+                        UgcTopNavItem.Fashion -> FashionContent(state = fashionState)
+                        UgcTopNavItem.Sports -> SportsContent(state = sportsState)
+                        UgcTopNavItem.Animal -> AnimalContent(state = animalState)
+                    }
                 }
             }
         }
