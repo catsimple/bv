@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -28,13 +29,15 @@ import dev.aaa1115910.bv.util.focusedBorder
 @Composable
 fun PgcCarousel(
     modifier: Modifier = Modifier,
-    data: List<CarouselData.CarouselItem>
+    data: List<CarouselData.CarouselItem>,
+    autoFocus: Boolean = false
 ) {
     val context = LocalContext.current
 
     CarouselContent(
         modifier = modifier,
         data = data,
+        autoFocus = autoFocus,
         onClick = { item ->
             SeasonInfoActivity.actionStart(
                 context = context,
@@ -50,13 +53,15 @@ fun PgcCarousel(
 @Composable
 fun UgcCarousel(
     modifier: Modifier = Modifier,
-    data: List<CarouselData.CarouselItem>
+    data: List<CarouselData.CarouselItem>,
+    autoFocus: Boolean = false
 ) {
     val context = LocalContext.current
 
     CarouselContent(
         modifier = modifier,
         data = data,
+        autoFocus = autoFocus,
         onClick = { item ->
             VideoInfoActivity.actionStart(
                 context = context,
@@ -71,6 +76,7 @@ fun UgcCarousel(
 fun CarouselContent(
     modifier: Modifier = Modifier,
     data: List<CarouselData.CarouselItem>,
+    autoFocus: Boolean = false,
     onClick: (CarouselData.CarouselItem) -> Unit
 ) {
     Carousel(
@@ -78,6 +84,7 @@ fun CarouselContent(
         modifier = modifier
             .height(240.dp)
             .clip(MaterialTheme.shapes.large)
+            .focusProperties { canFocus = autoFocus }
             .focusedBorder(),
         contentTransformEndToStart =
         fadeIn(tween(1000)).togetherWith(fadeOut(tween(1000))),
