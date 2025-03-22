@@ -90,6 +90,20 @@ fun PgcContent(
 
     }
 
+    // 添加监听标签变化的LaunchedEffect
+    LaunchedEffect(selectedTab) {
+        when (selectedTab) {
+            PgcTopNavItem.Anime -> pgcAnimeViewModel.getFeedIfEmpty()
+            PgcTopNavItem.GuoChuang -> pgcGuoChuangViewModel.getFeedIfEmpty()
+            PgcTopNavItem.Movie -> pgcMovieViewModel.getFeedIfEmpty()
+            PgcTopNavItem.Documentary -> pgcDocumentaryViewModel.getFeedIfEmpty()
+            PgcTopNavItem.Tv -> pgcTvViewModel.getFeedIfEmpty()
+            PgcTopNavItem.Variety -> pgcVarietyViewModel.getFeedIfEmpty()
+        }
+        // 内容加载完成后强制返回导航栏焦点
+        navFocusRequester.requestFocus(scope)
+    }
+
     BackHandler(focusOnContent) {
         logger.fInfo { "onFocusBackToNav" }
         navFocusRequester.requestFocus(scope)
