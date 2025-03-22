@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.OndemandVideo
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -59,6 +60,10 @@ fun NavigationDrawerScope.DrawerContent(
 ) {
     var selectedItem by remember { mutableStateOf(DrawerItem.Home) }
     val focusRestorerModifiers = createCustomInitialFocusRestorerModifiers()
+
+    LaunchedEffect(selectedItem) {
+        onDrawerItemChanged(selectedItem)
+    }
 
     Column(
         modifier = modifier
@@ -131,29 +136,23 @@ fun NavigationDrawerScope.DrawerContent(
                 DrawerItem.Home,
                 DrawerItem.UGC,
                 DrawerItem.PGC,
-            ).forEachIndexed { index, item ->
+            ).forEach { item ->
                 item {
                     NavigationDrawerItem(
                         modifier = Modifier
-                            .onFocusChanged { 
-                                if (it.hasFocus) {
-                                    selectedItem = item
-                                }
-                            }
-                            .then(focusRestorerModifiers.childModifier),
-                        onClick = { 
-                            selectedItem = item
-                            onDrawerItemChanged(item)
-                        },
+                            .onFocusChanged { if (it.hasFocus) selectedItem = item }
+                            .ifElse(
+                                item == DrawerItem.Home,
+                                focusRestorerModifiers.childModifier
+                            ),
+                        onClick = { selectedItem = item },
                         selected = selectedItem == item,
                         leadingContent = {
                             Icon(
                                 imageVector = item.displayIcon,
                                 contentDescription = null
                             )
-                        },
-                        focusable = true,
-                        enabled = true
+                        }
                     ) {
                         Text(text = item.displayName)
                     }
