@@ -75,33 +75,14 @@ fun UgcContent(
     var selectedTab by remember { mutableStateOf(UgcTopNavItem.Douga) }
     var focusOnContent by remember { mutableStateOf(false) }
 
+    // 监听标签变化，确保焦点保持在导航栏上
+    LaunchedEffect(selectedTab) {
+        navFocusRequester.requestFocus(scope)
+    }
+
     //启动时刷新数据
     LaunchedEffect(Unit) {
 
-    }
-
-    // 添加监听标签变化的LaunchedEffect
-    LaunchedEffect(selectedTab) {
-        when (selectedTab) {
-            UgcTopNavItem.Douga -> if (dougaState.ugcItems.isEmpty()) dougaState.initUgcRegionData()
-            UgcTopNavItem.Game -> if (gameState.ugcItems.isEmpty()) gameState.initUgcRegionData()
-            UgcTopNavItem.Kichiku -> if (kichikuState.ugcItems.isEmpty()) kichikuState.initUgcRegionData()
-            UgcTopNavItem.Music -> if (musicState.ugcItems.isEmpty()) musicState.initUgcRegionData()
-            UgcTopNavItem.Dance -> if (danceState.ugcItems.isEmpty()) danceState.initUgcRegionData()
-            UgcTopNavItem.Cinephile -> if (cinephileState.ugcItems.isEmpty()) cinephileState.initUgcRegionData()
-            UgcTopNavItem.Ent -> if (entState.ugcItems.isEmpty()) entState.initUgcRegionData()
-            UgcTopNavItem.Knowledge -> if (knowledgeState.ugcItems.isEmpty()) knowledgeState.initUgcRegionData()
-            UgcTopNavItem.Tech -> if (techState.ugcItems.isEmpty()) techState.initUgcRegionData()
-            UgcTopNavItem.Information -> if (informationState.ugcItems.isEmpty()) informationState.initUgcRegionData()
-            UgcTopNavItem.Food -> if (foodState.ugcItems.isEmpty()) foodState.initUgcRegionData()
-            UgcTopNavItem.Life -> if (lifeState.ugcItems.isEmpty()) lifeState.initUgcRegionData()
-            UgcTopNavItem.Car -> if (carState.ugcItems.isEmpty()) carState.initUgcRegionData()
-            UgcTopNavItem.Fashion -> if (fashionState.ugcItems.isEmpty()) fashionState.initUgcRegionData()
-            UgcTopNavItem.Sports -> if (sportsState.ugcItems.isEmpty()) sportsState.initUgcRegionData()
-            UgcTopNavItem.Animal -> if (animalState.ugcItems.isEmpty()) animalState.initUgcRegionData()
-        }
-        // 内容加载完成后强制返回导航栏焦点
-        navFocusRequester.requestFocus(scope)
     }
 
     BackHandler(focusOnContent) {
