@@ -25,13 +25,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
@@ -83,7 +77,6 @@ fun PgcScaffold(
     featureButtons: (@Composable () -> Unit)? = null
 ) {
     val carouselFocusRequester = remember { FocusRequester() }
-    var isCarouselFocused by remember { mutableStateOf(false) }
 
     val carouselItems = pgcViewModel.carouselItems
     val pgcFeeds = pgcViewModel.feedItems
@@ -103,9 +96,7 @@ fun PgcScaffold(
                     modifier = Modifier
                         .width(880.dp)
                         .padding(32.dp, 0.dp)
-                        .onFocusChanged { 
-                            isCarouselFocused = it.hasFocus
-                        },
+                        .focusRequester(carouselFocusRequester),
                     data = carouselItems
                 )
             }
