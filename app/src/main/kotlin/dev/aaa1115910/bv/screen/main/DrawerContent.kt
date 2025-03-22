@@ -140,7 +140,12 @@ fun NavigationDrawerScope.DrawerContent(
                 item {
                     NavigationDrawerItem(
                         modifier = Modifier
-                            .onFocusChanged { if (it.hasFocus) selectedItem = item }
+                            .onFocusChanged { 
+                                if (it.hasFocus) {
+                                    selectedItem = item
+                                    onDrawerItemChanged(item)
+                                }
+                            }
                             .ifElse(
                                 item == DrawerItem.Home,
                                 focusRestorerModifiers.childModifier
