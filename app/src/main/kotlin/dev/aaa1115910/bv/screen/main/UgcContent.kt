@@ -143,7 +143,11 @@ fun UgcContent(
         Box(
             modifier = Modifier
                 .padding(innerPadding)
-                .onFocusChanged { focusOnContent = it.hasFocus }
+                .onFocusChanged { 
+                    if (it.hasFocus) {
+                        focusOnContent = true
+                    }
+                }
         ) {
             AnimatedContent(
                 targetState = selectedTab,
