@@ -74,10 +74,18 @@ fun UgcContent(
 
     var selectedTab by remember { mutableStateOf(UgcTopNavItem.Douga) }
     var focusOnContent by remember { mutableStateOf(false) }
+    var hasFocus by remember { mutableStateOf(false) }
 
     //启动时刷新数据
     LaunchedEffect(Unit) {
 
+    }
+
+    // 添加LaunchedEffect在hasFocus变化时恢复导航焦点
+    LaunchedEffect(hasFocus) {
+        if (hasFocus) {
+            navFocusRequester.requestFocus()
+        }
     }
 
     BackHandler(focusOnContent) {
@@ -107,7 +115,8 @@ fun UgcContent(
     }
 
     Scaffold(
-        modifier = modifier,
+        modifier = modifier
+            .onFocusChanged { hasFocus = it.hasFocus },
         topBar = {
             TopNav(
                 modifier = Modifier
