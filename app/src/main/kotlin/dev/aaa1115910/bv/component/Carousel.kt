@@ -8,7 +8,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -18,9 +17,6 @@ import androidx.compose.ui.unit.dp
 import androidx.tv.material3.Carousel
 import androidx.tv.material3.ExperimentalTvMaterial3Api
 import androidx.tv.material3.MaterialTheme
-import androidx.tv.material3.focusRequester
-import androidx.tv.material3.focusProperties
-import androidx.tv.material3.rememberFocusRequester
 import coil.compose.AsyncImage
 import dev.aaa1115910.biliapi.entity.CarouselData
 import dev.aaa1115910.bv.activities.video.SeasonInfoActivity
@@ -77,19 +73,12 @@ fun CarouselContent(
     data: List<CarouselData.CarouselItem>,
     onClick: (CarouselData.CarouselItem) -> Unit
 ) {
-    val focusRequester = remember { FocusRequester() }
-    
     Carousel(
         itemCount = data.size,
         modifier = modifier
             .height(240.dp)
             .clip(MaterialTheme.shapes.large)
-            .focusedBorder()
-            .focusRequester(focusRequester)
-            .focusProperties {
-                enter = { Enter.None }
-                exit = { Exit.None }
-            },
+            .focusedBorder(),
         contentTransformEndToStart =
         fadeIn(tween(1000)).togetherWith(fadeOut(tween(1000))),
         contentTransformStartToEnd =
