@@ -84,12 +84,7 @@ fun UgcRegionScaffold(
                     UgcCarousel(
                         modifier = Modifier
                             .width(880.dp)
-                            .padding(32.dp, 0.dp)
-                            .onFocusChanged { 
-                                if (it.hasFocus) {
-                                    currentFocusedIndex = -1
-                                }
-                            },
+                            .padding(32.dp, 0.dp),
                         data = state.carouselItems
                     )
                 }
