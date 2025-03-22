@@ -85,7 +85,8 @@ fun UgcRegionScaffold(
                         modifier = Modifier
                             .width(880.dp)
                             .padding(32.dp, 0.dp),
-                        data = state.carouselItems
+                        data = state.carouselItems,
+                        autoFocus = false
                     )
                 }
             }
