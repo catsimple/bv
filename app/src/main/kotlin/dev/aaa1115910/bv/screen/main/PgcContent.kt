@@ -23,7 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.focus.focusable
 import androidx.compose.ui.unit.dp
 import dev.aaa1115910.bv.component.PgcTopNavItem
 import dev.aaa1115910.bv.component.TopNav
@@ -69,6 +68,7 @@ fun PgcContent(
 
     var selectedTab by remember { mutableStateOf(PgcTopNavItem.Anime) }
     var focusOnContent by remember { mutableStateOf(false) }
+    var hasFocus by remember { mutableStateOf(false) }
     val currentListOnTop by remember {
         derivedStateOf {
             with(
@@ -83,6 +83,13 @@ fun PgcContent(
             ) {
                 firstVisibleItemIndex == 0 && firstVisibleItemScrollOffset == 0
             }
+        }
+    }
+
+    //监听焦点变化
+    LaunchedEffect(hasFocus) {
+        if (hasFocus) {
+            navFocusRequester.requestFocus()
         }
     }
 
@@ -108,7 +115,8 @@ fun PgcContent(
     }
 
     Scaffold(
-        modifier = Modifier,
+        modifier = Modifier
+            .onFocusChanged { hasFocus = it.hasFocus },
         topBar = {
             TopNav(
                 modifier = Modifier
@@ -137,31 +145,27 @@ fun PgcContent(
                 .padding(innerPadding)
                 .onFocusChanged { focusOnContent = it.hasFocus }
         ) {
-            Box(
-                modifier = Modifier.focusable(false)
-            ) {
-                AnimatedContent(
-                    targetState = selectedTab,
-                    label = "pgc animated content",
-                    transitionSpec = {
-                        val coefficient = 10
-                        if (targetState.ordinal < initialState.ordinal) {
-                            fadeIn() + slideInHorizontally { -it / coefficient } togetherWith
-                                    fadeOut() + slideOutHorizontally { it / coefficient }
-                        } else {
-                            fadeIn() + slideInHorizontally { it / coefficient } togetherWith
-                                    fadeOut() + slideOutHorizontally { -it / coefficient }
-                        }
+            AnimatedContent(
+                targetState = selectedTab,
+                label = "pgc animated content",
+                transitionSpec = {
+                    val coefficient = 10
+                    if (targetState.ordinal < initialState.ordinal) {
+                        fadeIn() + slideInHorizontally { -it / coefficient } togetherWith
+                                fadeOut() + slideOutHorizontally { it / coefficient }
+                    } else {
+                        fadeIn() + slideInHorizontally { it / coefficient } togetherWith
+                                fadeOut() + slideOutHorizontally { -it / coefficient }
                     }
-                ) { screen ->
-                    when (screen) {
-                        PgcTopNavItem.Anime -> AnimeContent(lazyListState = animeState)
-                        PgcTopNavItem.GuoChuang -> GuoChuangContent(lazyListState = guoChuangState)
-                        PgcTopNavItem.Movie -> MovieContent(lazyListState = movieState)
-                        PgcTopNavItem.Documentary -> DocumentaryContent(lazyListState = documentaryState)
-                        PgcTopNavItem.Tv -> TvContent(lazyListState = tvState)
-                        PgcTopNavItem.Variety -> VarietyContent(lazyListState = varietyState)
-                    }
+                }
+            ) { screen ->
+                when (screen) {
+                    PgcTopNavItem.Anime -> AnimeContent(lazyListState = animeState)
+                    PgcTopNavItem.GuoChuang -> GuoChuangContent(lazyListState = guoChuangState)
+                    PgcTopNavItem.Movie -> MovieContent(lazyListState = movieState)
+                    PgcTopNavItem.Documentary -> DocumentaryContent(lazyListState = documentaryState)
+                    PgcTopNavItem.Tv -> TvContent(lazyListState = tvState)
+                    PgcTopNavItem.Variety -> VarietyContent(lazyListState = varietyState)
                 }
             }
         }
