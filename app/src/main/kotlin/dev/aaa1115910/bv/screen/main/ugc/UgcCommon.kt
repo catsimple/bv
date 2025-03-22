@@ -73,24 +73,6 @@ fun UgcRegionScaffold(
         modifier = modifier,
         state = state.lazyListState
     ) {
-        if (state.showCarousel) {
-            item {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .horizontalScroll(rememberScrollState()),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    UgcCarousel(
-                        modifier = Modifier
-                            .width(880.dp)
-                            .padding(32.dp, 0.dp),
-                        data = state.carouselItems
-                    )
-                }
-            }
-        }
-
         if (childRegionButtons != null) {
             item {
                 childRegionButtons()
@@ -188,7 +170,7 @@ data class UgcScaffoldState(
     var nextPage by mutableStateOf(UgcRegionPage())
     var hasMore by mutableStateOf(true)
     var updating by mutableStateOf(false)
-    var showCarousel by mutableStateOf(true)
+    var showCarousel by mutableStateOf(false)
 
     suspend fun initUgcRegionData() {
         loadUgcRegionData()
@@ -222,7 +204,7 @@ data class UgcScaffoldState(
         scope.launch(Dispatchers.IO) {
             nextPage = UgcRegionPage()
             hasMore = true
-            showCarousel = true
+            showCarousel = false
             carouselItems.clear()
             ugcItems.clear()
             initUgcRegionData()
