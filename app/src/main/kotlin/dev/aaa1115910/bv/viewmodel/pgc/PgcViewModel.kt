@@ -39,7 +39,7 @@ abstract class PgcViewModel(
      * 猜你喜欢
      */
     val feedItems = mutableStateListOf<FeedListItem>()
-ugccomm
+
     /**
      * 推荐数据中会穿插排行榜，为了避免出现某一行仅出现单独几个剧集，因此将不满一行的剧集单独存起来
      */
