@@ -68,7 +68,6 @@ fun PgcContent(
 
     var selectedTab by remember { mutableStateOf(PgcTopNavItem.Anime) }
     var focusOnContent by remember { mutableStateOf(false) }
-    var hasFocus by remember { mutableStateOf(false) }
     val currentListOnTop by remember {
         derivedStateOf {
             with(
@@ -83,13 +82,6 @@ fun PgcContent(
             ) {
                 firstVisibleItemIndex == 0 && firstVisibleItemScrollOffset == 0
             }
-        }
-    }
-
-    //监听焦点变化
-    LaunchedEffect(hasFocus) {
-        if (hasFocus) {
-            navFocusRequester.requestFocus()
         }
     }
 
@@ -115,8 +107,7 @@ fun PgcContent(
     }
 
     Scaffold(
-        modifier = Modifier
-            .onFocusChanged { hasFocus = it.hasFocus },
+        modifier = Modifier,
         topBar = {
             TopNav(
                 modifier = Modifier
@@ -126,6 +117,8 @@ fun PgcContent(
                 isLargePadding = !focusOnContent && currentListOnTop,
                 onSelectedChanged = { nav ->
                     selectedTab = nav as PgcTopNavItem
+                    // 确保导航栏保持焦点
+                    navFocusRequester.requestFocus(scope)
                 },
                 onClick = { nav ->
                     when (nav) {
