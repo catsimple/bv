@@ -76,31 +76,12 @@ fun PgcScaffold(
     pgcType: PgcType,
     featureButtons: (@Composable () -> Unit)? = null
 ) {
-    val carouselFocusRequester = remember { FocusRequester() }
-
-    val carouselItems = pgcViewModel.carouselItems
     val pgcFeeds = pgcViewModel.feedItems
 
     LazyColumn(
         modifier = modifier,
         state = lazyListState
     ) {
-        item {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .horizontalScroll(rememberScrollState()),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                PgcCarousel(
-                    modifier = Modifier
-                        .width(880.dp)
-                        .padding(32.dp, 0.dp)
-                        .focusRequester(carouselFocusRequester),
-                    data = carouselItems
-                )
-            }
-        }
         if (featureButtons != null) {
             item {
                 featureButtons()
