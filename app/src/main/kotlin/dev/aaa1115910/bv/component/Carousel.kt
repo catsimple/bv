@@ -78,13 +78,11 @@ fun CarouselContent(
         modifier = modifier
             .height(240.dp)
             .clip(MaterialTheme.shapes.large)
-            .focusedBorder()
-            .tabIndex(-1),
+            .focusedBorder(),
         contentTransformEndToStart =
         fadeIn(tween(1000)).togetherWith(fadeOut(tween(1000))),
         contentTransformStartToEnd =
-        fadeIn(tween(1000)).togetherWith(fadeOut(tween(1000))),
-        autoScrollDurationMillis(5000)
+        fadeIn(tween(1000)).togetherWith(fadeOut(tween(1000)))
     ) { itemIndex ->
         CarouselCard(
             data = data[itemIndex],
@@ -103,8 +101,7 @@ fun CarouselCard(
         modifier = modifier
             .fillMaxWidth()
             .clip(MaterialTheme.shapes.large)
-            .clickable { onClick() }
-            .tabIndex(-1),
+            .clickable { onClick() },
         model = data.cover,
         contentDescription = null,
         contentScale = ContentScale.Crop,
