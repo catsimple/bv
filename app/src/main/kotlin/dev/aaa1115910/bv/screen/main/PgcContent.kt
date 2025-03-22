@@ -117,8 +117,6 @@ fun PgcContent(
                 isLargePadding = !focusOnContent && currentListOnTop,
                 onSelectedChanged = { nav ->
                     selectedTab = nav as PgcTopNavItem
-                    // 确保导航栏保持焦点
-                    navFocusRequester.requestFocus(scope)
                 },
                 onClick = { nav ->
                     when (nav) {
