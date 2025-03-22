@@ -1,15 +1,13 @@
 name: Alpha Build
 
 on:
-  push:
-    branches:
-      - develop
+  workflow_dispatch:
 
 jobs:
   build-alpha:
     name: Build Alpha Apk
     runs-on: macos-latest
-    if: github.repository == 'aaa1115910/bv'
+    if: github.repository == 'catsimple/bv'
 
     steps:
       - name: Checkout
