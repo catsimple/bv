@@ -13,7 +13,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: develop
+          ref: fix
           fetch-depth: 0
           submodules: 'true'
 
