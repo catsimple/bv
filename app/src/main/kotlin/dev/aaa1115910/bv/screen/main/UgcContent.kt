@@ -74,14 +74,6 @@ fun UgcContent(
 
     var selectedTab by remember { mutableStateOf(UgcTopNavItem.Douga) }
     var focusOnContent by remember { mutableStateOf(false) }
-    var hasFocus by remember { mutableStateOf(false) }
-
-    //监听焦点变化
-    LaunchedEffect(hasFocus) {
-        if (hasFocus) {
-            navFocusRequester.requestFocus()
-        }
-    }
 
     //启动时刷新数据
     LaunchedEffect(Unit) {
@@ -115,8 +107,7 @@ fun UgcContent(
     }
 
     Scaffold(
-        modifier = modifier
-            .onFocusChanged { hasFocus = it.hasFocus },
+        modifier = modifier,
         topBar = {
             TopNav(
                 modifier = Modifier
@@ -125,6 +116,8 @@ fun UgcContent(
                 isLargePadding = !focusOnContent,
                 onSelectedChanged = { nav ->
                     selectedTab = nav as UgcTopNavItem
+                    // 确保导航栏保持焦点
+                    navFocusRequester.requestFocus(scope)
                 },
                 onClick = { nav ->
                     when (nav) {
