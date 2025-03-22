@@ -85,11 +85,6 @@ fun PgcContent(
         }
     }
 
-    // 监听标签变化，确保焦点保持在导航栏上
-    LaunchedEffect(selectedTab) {
-        navFocusRequester.requestFocus(scope)
-    }
-
     //启动时刷新数据
     LaunchedEffect(Unit) {
 
@@ -141,27 +136,31 @@ fun PgcContent(
                 .padding(innerPadding)
                 .onFocusChanged { focusOnContent = it.hasFocus }
         ) {
-            AnimatedContent(
-                targetState = selectedTab,
-                label = "pgc animated content",
-                transitionSpec = {
-                    val coefficient = 10
-                    if (targetState.ordinal < initialState.ordinal) {
-                        fadeIn() + slideInHorizontally { -it / coefficient } togetherWith
-                                fadeOut() + slideOutHorizontally { it / coefficient }
-                    } else {
-                        fadeIn() + slideInHorizontally { it / coefficient } togetherWith
-                                fadeOut() + slideOutHorizontally { -it / coefficient }
+            Box(
+                modifier = Modifier.focusable(false)
+            ) {
+                AnimatedContent(
+                    targetState = selectedTab,
+                    label = "pgc animated content",
+                    transitionSpec = {
+                        val coefficient = 10
+                        if (targetState.ordinal < initialState.ordinal) {
+                            fadeIn() + slideInHorizontally { -it / coefficient } togetherWith
+                                    fadeOut() + slideOutHorizontally { it / coefficient }
+                        } else {
+                            fadeIn() + slideInHorizontally { it / coefficient } togetherWith
+                                    fadeOut() + slideOutHorizontally { -it / coefficient }
+                        }
                     }
-                }
-            ) { screen ->
-                when (screen) {
-                    PgcTopNavItem.Anime -> AnimeContent(lazyListState = animeState)
-                    PgcTopNavItem.GuoChuang -> GuoChuangContent(lazyListState = guoChuangState)
-                    PgcTopNavItem.Movie -> MovieContent(lazyListState = movieState)
-                    PgcTopNavItem.Documentary -> DocumentaryContent(lazyListState = documentaryState)
-                    PgcTopNavItem.Tv -> TvContent(lazyListState = tvState)
-                    PgcTopNavItem.Variety -> VarietyContent(lazyListState = varietyState)
+                ) { screen ->
+                    when (screen) {
+                        PgcTopNavItem.Anime -> AnimeContent(lazyListState = animeState)
+                        PgcTopNavItem.GuoChuang -> GuoChuangContent(lazyListState = guoChuangState)
+                        PgcTopNavItem.Movie -> MovieContent(lazyListState = movieState)
+                        PgcTopNavItem.Documentary -> DocumentaryContent(lazyListState = documentaryState)
+                        PgcTopNavItem.Tv -> TvContent(lazyListState = tvState)
+                        PgcTopNavItem.Variety -> VarietyContent(lazyListState = varietyState)
+                    }
                 }
             }
         }
