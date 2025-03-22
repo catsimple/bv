@@ -82,7 +82,7 @@ fun CarouselContent(
         contentTransformEndToStart =
         fadeIn(tween(1000)).togetherWith(fadeOut(tween(1000))),
         contentTransformStartToEnd =
-        fadeIn(tween(1000)).togetherWith(fadeOut(tween(1000))),
+        fadeIn(tween(1000)).togetherWith(fadeOut(tween(1000)))
     ) { itemIndex ->
         CarouselCard(
             data = data[itemIndex],
