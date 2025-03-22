@@ -97,7 +97,8 @@ fun PgcScaffold(
                         .width(880.dp)
                         .padding(32.dp, 0.dp)
                         .focusRequester(carouselFocusRequester),
-                    data = carouselItems
+                    data = carouselItems,
+                    autoFocus = false
                 )
             }
         }
