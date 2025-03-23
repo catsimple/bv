@@ -22,6 +22,7 @@ import org.koin.androidx.compose.koinViewModel
 fun GuoChuangContent(
     modifier: Modifier = Modifier,
     lazyListState: LazyListState,
+    contentFocusState: Boolean,
     pgcViewModel: PgcGuoChuangViewModel = koinViewModel()
 ) {
     val context= LocalContext.current
@@ -34,6 +35,7 @@ fun GuoChuangContent(
         lazyListState = lazyListState,
         pgcViewModel = pgcViewModel,
         pgcType = PgcType.GuoChuang,
+        contentFocusStateForCarousel = contentFocusState,
         featureButtons = {
             GuoChuangFeatureButtons(
                 modifier = Modifier.padding(vertical = 24.dp),
