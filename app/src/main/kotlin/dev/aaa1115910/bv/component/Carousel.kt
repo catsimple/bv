@@ -71,14 +71,24 @@ fun UgcCarousel(
 fun CarouselContent(
     modifier: Modifier = Modifier,
     data: List<CarouselData.CarouselItem>,
-    onClick: (CarouselData.CarouselItem) -> Unit
+    onClick: (CarouselData.CarouselItem) -> Unit,
+    canRequestFocus: Boolean = true
 ) {
     Carousel(
         itemCount = data.size,
         modifier = modifier
             .height(240.dp)
             .clip(MaterialTheme.shapes.large)
-            .focusedBorder(),
+            .focusedBorder()
+            .then(
+                if (canRequestFocus) {
+                    Modifier
+                } else {
+                    Modifier.focusProperties { 
+                        canFocus = false
+                    }
+                }
+            ),
         contentTransformEndToStart =
         fadeIn(tween(1000)).togetherWith(fadeOut(tween(1000))),
         contentTransformStartToEnd =
