@@ -22,6 +22,7 @@ import org.koin.androidx.compose.koinViewModel
 fun TvContent(
     modifier: Modifier = Modifier,
     lazyListState: LazyListState,
+    contentFocusState: Boolean,
     pgcViewModel: PgcTvViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
@@ -34,6 +35,7 @@ fun TvContent(
         lazyListState = lazyListState,
         pgcViewModel = pgcViewModel,
         pgcType = PgcType.Tv,
+        contentFocusStateForCarousel = contentFocusState,
         featureButtons = {
             TvFeatureButtons(
                 modifier = Modifier.padding(vertical = 24.dp),
