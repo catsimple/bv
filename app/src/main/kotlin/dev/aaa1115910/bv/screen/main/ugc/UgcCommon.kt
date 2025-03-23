@@ -60,6 +60,7 @@ fun UgcRegionScaffold(
     val shouldLoadMore by remember {
         derivedStateOf { currentFocusedIndex + 24 > state.ugcItems.size }
     }
+    var focusOnContent by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) { if (state.ugcItems.isEmpty()) state.initUgcRegionData() }
     LaunchedEffect(shouldLoadMore) {
@@ -85,7 +86,8 @@ fun UgcRegionScaffold(
                         modifier = Modifier
                             .width(880.dp)
                             .padding(32.dp, 0.dp),
-                        data = state.carouselItems
+                        data = state.carouselItems,
+                        canRequestFocus = focusOnContent
                     )
                 }
             }
