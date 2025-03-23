@@ -101,7 +101,7 @@ fun CarouselCard(
         modifier = modifier
             .fillMaxWidth()
             .clip(MaterialTheme.shapes.large)
-            .clickable { onClick() },
+            .clickable { onClick() }
             .focusable(false),
         model = data.cover,
         contentDescription = null,
