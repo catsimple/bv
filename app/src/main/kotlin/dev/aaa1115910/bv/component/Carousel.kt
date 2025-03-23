@@ -7,6 +7,7 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.focusable
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -78,7 +79,8 @@ fun CarouselContent(
         modifier = modifier
             .height(240.dp)
             .clip(MaterialTheme.shapes.large)
-            .focusedBorder(),
+            .focusedBorder()
+            .focusable(false),
         contentTransformEndToStart =
         fadeIn(tween(1000)).togetherWith(fadeOut(tween(1000))),
         contentTransformStartToEnd =
