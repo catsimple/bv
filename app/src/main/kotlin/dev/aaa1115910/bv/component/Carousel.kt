@@ -102,6 +102,7 @@ fun CarouselCard(
             .fillMaxWidth()
             .clip(MaterialTheme.shapes.large)
             .clickable { onClick() },
+        .focusable(false),
         model = data.cover,
         contentDescription = null,
         contentScale = ContentScale.Crop,
