@@ -22,6 +22,7 @@ import org.koin.androidx.compose.koinViewModel
 fun DocumentaryContent(
     modifier: Modifier = Modifier,
     lazyListState: LazyListState,
+    contentFocusState: Boolean,
     pgcViewModel: PgcDocumentaryViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
@@ -34,6 +35,7 @@ fun DocumentaryContent(
         lazyListState = lazyListState,
         pgcViewModel = pgcViewModel,
         pgcType = PgcType.Documentary,
+        contentFocusStateForCarousel = contentFocusState,
         featureButtons = {
             DocumentaryFeatureButtons(
                 modifier = Modifier.padding(vertical = 24.dp),
