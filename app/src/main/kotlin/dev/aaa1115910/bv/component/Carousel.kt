@@ -68,33 +68,32 @@ fun UgcCarousel(
     )
 }
 
- @OptIn(ExperimentalTvMaterial3Api::class)
- @Composable
- fun CarouselContent(
-     modifier: Modifier = Modifier,
-     data: List<CarouselData.CarouselItem>,
-     onClick: (CarouselData.CarouselItem) -> Unit
- ) {
-     FocusGroup {
-         Carousel(
-             itemCount = data.size,
-             modifier = modifier
-                 .height(240.dp)
-                 .clip(MaterialTheme.shapes.large)
-                 .focusedBorder()
-                 .focusable(false),
-             contentTransformEndToStart =
-             fadeIn(tween(1000)).togetherWith(fadeOut(tween(1000))),
-             contentTransformStartToEnd =
-             fadeIn(tween(1000)).togetherWith(fadeOut(tween(1000)))
-         ) { itemIndex ->
-             CarouselCard(
-                 data = data[itemIndex],
-                 onClick = { onClick(data[itemIndex]) }
-             )
-         }
-     }
- }
+@OptIn(ExperimentalTvMaterial3Api::class)
+@Composable
+fun CarouselContent(
+    modifier: Modifier = Modifier,
+    data: List<CarouselData.CarouselItem>,
+    onClick: (CarouselData.CarouselItem) -> Unit
+) {
+    Carousel(
+        itemCount = data.size,
+        modifier = modifier
+            .height(240.dp)
+            .clip(MaterialTheme.shapes.large)
+            .focusedBorder()
+            .focusable(false)
+            .focusGroup(),
+        contentTransformEndToStart =
+        fadeIn(tween(1000)).togetherWith(fadeOut(tween(1000))),
+        contentTransformStartToEnd =
+        fadeIn(tween(1000)).togetherWith(fadeOut(tween(1000)))
+    ) { itemIndex ->
+        CarouselCard(
+            data = data[itemIndex],
+            onClick = { onClick(data[itemIndex]) }
+        )
+    }
+}
 
 @Composable
 fun CarouselCard(
