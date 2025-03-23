@@ -22,6 +22,7 @@ import org.koin.androidx.compose.koinViewModel
 fun MovieContent(
     modifier: Modifier = Modifier,
     lazyListState: LazyListState,
+    contentFocusState: Boolean,
     pgcViewModel: PgcMovieViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
@@ -34,6 +35,7 @@ fun MovieContent(
         lazyListState = lazyListState,
         pgcViewModel = pgcViewModel,
         pgcType = PgcType.Movie,
+        contentFocusStateForCarousel = contentFocusState,
         featureButtons = {
             MovieFeatureButtons(
                 modifier = Modifier.padding(vertical = 24.dp),
