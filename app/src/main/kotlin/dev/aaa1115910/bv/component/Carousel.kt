@@ -28,13 +28,15 @@ import dev.aaa1115910.bv.util.focusedBorder
 @Composable
 fun PgcCarousel(
     modifier: Modifier = Modifier,
-    data: List<CarouselData.CarouselItem>
+    data: List<CarouselData.CarouselItem>,
+    canRequestFocus: Boolean = false
 ) {
     val context = LocalContext.current
 
     CarouselContent(
         modifier = modifier,
         data = data,
+        canRequestFocus = canRequestFocus,
         onClick = { item ->
             SeasonInfoActivity.actionStart(
                 context = context,
@@ -50,13 +52,15 @@ fun PgcCarousel(
 @Composable
 fun UgcCarousel(
     modifier: Modifier = Modifier,
-    data: List<CarouselData.CarouselItem>
+    data: List<CarouselData.CarouselItem>,
+    canRequestFocus: Boolean = false
 ) {
     val context = LocalContext.current
 
     CarouselContent(
         modifier = modifier,
         data = data,
+        canRequestFocus = canRequestFocus,
         onClick = { item ->
             VideoInfoActivity.actionStart(
                 context = context,
