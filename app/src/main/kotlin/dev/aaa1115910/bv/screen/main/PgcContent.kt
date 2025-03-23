@@ -151,12 +151,18 @@ fun PgcContent(
                 }
             ) { screen ->
                 when (screen) {
-                    PgcTopNavItem.Anime -> AnimeContent(lazyListState = animeState)
-                    PgcTopNavItem.GuoChuang -> GuoChuangContent(lazyListState = guoChuangState)
-                    PgcTopNavItem.Movie -> MovieContent(lazyListState = movieState)
-                    PgcTopNavItem.Documentary -> DocumentaryContent(lazyListState = documentaryState)
-                    PgcTopNavItem.Tv -> TvContent(lazyListState = tvState)
-                    PgcTopNavItem.Variety -> VarietyContent(lazyListState = varietyState)
+                    PgcTopNavItem.Anime -> AnimeContent(lazyListState = animeState,
+                                                        contentFocusState = focusOnContent)
+                    PgcTopNavItem.GuoChuang -> GuoChuangContent(lazyListState = guoChuangState,
+                                                                contentFocusState = focusOnContent)
+                    PgcTopNavItem.Movie -> MovieContent(lazyListState = movieState,
+                                                        contentFocusState = focusOnContent)
+                    PgcTopNavItem.Documentary -> DocumentaryContent(lazyListState = documentaryState,
+                                                                    contentFocusState = focusOnContent)
+                    PgcTopNavItem.Tv -> TvContent(lazyListState = tvState,
+                                                  contentFocusState = focusOnContent)
+                    PgcTopNavItem.Variety -> VarietyContent(lazyListState = varietyState,
+                                                            contentFocusState = focusOnContent)
                 }
             }
         }
