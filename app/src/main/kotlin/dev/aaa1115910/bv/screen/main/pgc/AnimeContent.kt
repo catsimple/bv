@@ -28,6 +28,7 @@ import org.koin.androidx.compose.koinViewModel
 fun AnimeContent(
     modifier: Modifier = Modifier,
     lazyListState: LazyListState,
+    contentFocusState: Boolean,
     pgcViewModel: PgcAnimeViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
@@ -55,6 +56,7 @@ fun AnimeContent(
         lazyListState = lazyListState,
         pgcViewModel = pgcViewModel,
         pgcType = PgcType.Anime,
+        contentFocusStateForCarousel = contentFocusState,
         featureButtons = {
             AnimeFeatureButtons(
                 modifier = Modifier.padding(vertical = 24.dp),
