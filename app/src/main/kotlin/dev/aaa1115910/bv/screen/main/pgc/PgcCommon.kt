@@ -77,7 +77,7 @@ fun PgcScaffold(
     featureButtons: (@Composable () -> Unit)? = null
 ) {
     val carouselFocusRequester = remember { FocusRequester() }
-
+    var focusOnContent by remember { mutableStateOf(false) }
     val carouselItems = pgcViewModel.carouselItems
     val pgcFeeds = pgcViewModel.feedItems
 
@@ -97,7 +97,8 @@ fun PgcScaffold(
                         .width(880.dp)
                         .padding(32.dp, 0.dp)
                         .focusRequester(carouselFocusRequester),
-                    data = carouselItems
+                    data = carouselItems,
+                    canRequestFocus = focusOnContent
                 )
             }
         }
