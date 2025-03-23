@@ -22,6 +22,7 @@ import org.koin.androidx.compose.koinViewModel
 fun VarietyContent(
     modifier: Modifier = Modifier,
     lazyListState: LazyListState,
+    contentFocusState: Boolean,
     pgcViewModel: PgcVarietyViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
@@ -34,6 +35,7 @@ fun VarietyContent(
         lazyListState = lazyListState,
         pgcViewModel = pgcViewModel,
         pgcType = PgcType.Variety,
+        contentFocusStateForCarousel = contentFocusState,
         featureButtons = {
             VarietyFeatureButtons(
                 modifier = Modifier.padding(vertical = 24.dp),
