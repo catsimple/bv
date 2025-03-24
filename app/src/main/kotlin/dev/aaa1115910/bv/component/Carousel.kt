@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.tv.material3.Carousel
 import androidx.tv.material3.ExperimentalTvMaterial3Api
 import androidx.tv.material3.MaterialTheme
@@ -83,52 +84,62 @@ fun CarouselContent(
     onClick: (CarouselData.CarouselItem) -> Unit
 ) {
     var isBoxSelected by remember { mutableStateOf(false) }
-    val carouselFocusRequester = remember { FocusRequester() } 
+    val carouselContainerFocusRequester = remember { FocusRequester() } 
+    val cardFocusRequesters = remember { 
+        List(data.size) { FocusRequester() }.toMutableList()
+    }
 
     Box(
         modifier = modifier
             .focusable()
             .onFocusChanged { focusState ->
-                isBoxSelected = focusState.isFocused
+                isBoxSelected = (focusState.isFocused || focusState.hasFocus)
                 if (isBoxSelected) {
-                    carouselFocusRequester.requestFocus()
+                    if (cardFocusRequesters.isNotEmpty()) { 
+                        cardFocusRequesters.first().requestFocus() 
+                    }
                 }
             }
+            .focusRequester(carouselContainerFocusRequester) // Box 使用这个 FocusRequester
     ) {
         Carousel(
             itemCount = data.size,
             modifier = Modifier
                 .height(240.dp)
                 .clip(MaterialTheme.shapes.large)
-                .focusedBorder()
-                .focusRequester(carouselFocusRequester)
-                .focusProperties {
-                    canFocus = isBoxSelected
-                },
+                .focusedBorder(),
             contentTransformEndToStart =
             fadeIn(tween(1000)).togetherWith(fadeOut(tween(1000))),
             contentTransformStartToEnd =
             fadeIn(tween(1000)).togetherWith(fadeOut(tween(1000)))
+                .focusProperties {
+                    canFocus = isBoxSelected
+                },
         ) { itemIndex ->
             CarouselCard(
                 data = data[itemIndex],
-                onClick = { onClick(data[itemIndex]) }
+                onClick = { onClick(data[itemIndex]) },
+                focusRequester = cardFocusRequesters[itemIndex] // 将对应的 FocusRequester 传递给 CarouselCard
             )
         }
     }
 }
 
+
 @Composable
 fun CarouselCard(
     modifier: Modifier = Modifier,
     data: CarouselData.CarouselItem,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
+    focusRequester: FocusRequester // 新增 focusRequester 参数
 ) {
     AsyncImage(
         modifier = modifier
             .fillMaxWidth()
             .clip(MaterialTheme.shapes.large)
-            .clickable { onClick() },
+            .clickable { onClick() }
+            .focusRequester(focusRequester) // 应用 FocusRequester
+            .focusable(), // 显式声明 focusable
         model = data.cover,
         contentDescription = null,
         contentScale = ContentScale.Crop,
