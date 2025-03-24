@@ -98,7 +98,7 @@ fun CarouselContent(
                     cardFocusRequesters.firstOrNull()?.requestFocus()
                 }
             }
-            .focusRequester(carouselContainerFocusRequester)
+            .focusRequester(carouselFocusRequester)
     ) {
         Carousel(
             itemCount = data.size,
