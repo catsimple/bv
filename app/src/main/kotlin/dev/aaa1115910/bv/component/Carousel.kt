@@ -24,6 +24,8 @@ import dev.aaa1115910.bv.activities.video.SeasonInfoActivity
 import dev.aaa1115910.bv.activities.video.VideoInfoActivity
 import dev.aaa1115910.bv.entity.proxy.ProxyArea
 import dev.aaa1115910.bv.util.focusedBorder
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.runtime.remember
 
 @OptIn(ExperimentalTvMaterial3Api::class)
 @Composable
@@ -35,8 +37,8 @@ fun PgcCarousel(
 
     Box(
         modifier = modifier.onFocusChanged { focusState ->
-            if (focusState.hasFocus) {
-                // 处理焦点逻辑，确保焦点不被Carousel抢走
+            if (focusState.isFocused) {
+                // 处理焦点逻辑
             }
         }
     ) {
@@ -65,8 +67,8 @@ fun UgcCarousel(
 
     Box(
         modifier = modifier.onFocusChanged { focusState ->
-            if (focusState.hasFocus) {
-                // 处理焦点逻辑，确保焦点不被Carousel抢走
+            if (focusState.isFocused) {
+                // 处理焦点逻辑
             }
         }
     ) {
