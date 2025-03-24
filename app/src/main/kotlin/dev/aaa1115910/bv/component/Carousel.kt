@@ -26,6 +26,9 @@ import dev.aaa1115910.bv.entity.proxy.ProxyArea
 import dev.aaa1115910.bv.util.focusedBorder
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.runtime.remember
+import androidx.compose.ui.focus.Focusable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.focus.FocusRequester
 
 @OptIn(ExperimentalTvMaterial3Api::class)
 @Composable
@@ -34,13 +37,11 @@ fun PgcCarousel(
     data: List<CarouselData.CarouselItem>
 ) {
     val context = LocalContext.current
+    val focusRequester = remember { FocusRequester() }
 
     Box(
-        modifier = modifier.onFocusChanged { focusState ->
-            if (focusState.isFocused) {
-                // 处理焦点逻辑
-            }
-        }
+        modifier = modifier
+            .focusable(false)
     ) {
         CarouselContent(
             modifier = Modifier.fillMaxWidth(),
@@ -55,6 +56,12 @@ fun PgcCarousel(
             }
         )
     }
+
+    LaunchedEffect(currentFocusedIndex) {
+        if (currentFocusedIndex >= 0) {
+            focusRequester.requestFocus()
+        }
+    }
 }
 
 @OptIn(ExperimentalTvMaterial3Api::class)
@@ -64,13 +71,11 @@ fun UgcCarousel(
     data: List<CarouselData.CarouselItem>
 ) {
     val context = LocalContext.current
+    val focusRequester = remember { FocusRequester() }
 
     Box(
-        modifier = modifier.onFocusChanged { focusState ->
-            if (focusState.isFocused) {
-                // 处理焦点逻辑
-            }
-        }
+        modifier = modifier
+            .focusable(false)
     ) {
         CarouselContent(
             modifier = Modifier.fillMaxWidth(),
@@ -79,6 +84,12 @@ fun UgcCarousel(
                 // 处理点击事件
             }
         )
+    }
+
+    LaunchedEffect(currentFocusedIndex) {
+        if (currentFocusedIndex >= 0) {
+            focusRequester.requestFocus()
+        }
     }
 }
 
