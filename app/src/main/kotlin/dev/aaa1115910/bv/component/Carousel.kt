@@ -107,14 +107,14 @@ fun CarouselContent(
             modifier = Modifier
                 .height(240.dp)
                 .clip(MaterialTheme.shapes.large)
-                .focusedBorder(),
+                .focusedBorder()
+                .focusProperties {
+                    canFocus = isBoxSelected
+                },
             contentTransformEndToStart =
             fadeIn(tween(1000)).togetherWith(fadeOut(tween(1000))),
             contentTransformStartToEnd =
             fadeIn(tween(1000)).togetherWith(fadeOut(tween(1000)))
-                .focusProperties {
-                    canFocus = isBoxSelected
-                },
         ) { itemIndex ->
             CarouselCard(
                 data = data[itemIndex],
