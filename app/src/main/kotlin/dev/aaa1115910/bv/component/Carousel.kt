@@ -85,16 +85,20 @@ fun CarouselContent(
 ) {
     var isBoxSelected by remember { mutableStateOf(false) }
     val carouselFocusRequester = remember { FocusRequester() } 
+    val cardFocusRequesters = remember { 
+        List(data.size) { FocusRequester() }.toMutableList()
+    }
 
     Box(
         modifier = modifier
             .focusable()
             .onFocusChanged { focusState ->
-                isBoxSelected = focusState.isFocused
+                isBoxSelected = (focusState.isFocused || focusState.hasFocus)
                 if (isBoxSelected) {
-                    carouselFocusRequester.requestFocus()
+                    cardFocusRequesters.firstOrNull()?.requestFocus()
                 }
             }
+            .focusRequester(carouselContainerFocusRequester)
     ) {
         Carousel(
             itemCount = data.size,
@@ -103,9 +107,9 @@ fun CarouselContent(
                 .clip(MaterialTheme.shapes.large)
                 .focusedBorder()
                 .focusRequester(carouselFocusRequester)
-                .focusProperties {
-                    canFocus = isBoxSelected
-                },
+                .focusProperties ({
+                    canFocus = false
+                }),
             contentTransformEndToStart =
             fadeIn(tween(1000)).togetherWith(fadeOut(tween(1000))),
             contentTransformStartToEnd =
@@ -113,7 +117,8 @@ fun CarouselContent(
         ) { itemIndex ->
             CarouselCard(
                 data = data[itemIndex],
-                onClick = { onClick(data[itemIndex]) }
+                onClick = { onClick(data[itemIndex]) },
+                focusRequester = cardFocusRequesters[itemIndex]
             )
         }
     }
@@ -123,12 +128,16 @@ fun CarouselContent(
 fun CarouselCard(
     modifier: Modifier = Modifier,
     data: CarouselData.CarouselItem,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
+    focusRequester: FocusRequester
 ) {
+    val cardFocusRequester = remember { FocusRequester() }
+
     AsyncImage(
         modifier = modifier
             .fillMaxWidth()
             .clip(MaterialTheme.shapes.large)
+            .focusRequester(cardFocusRequester) 
             .clickable { onClick() },
         model = data.cover,
         contentDescription = null,
