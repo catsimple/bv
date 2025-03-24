@@ -1,6 +1,9 @@
 name: Alpha Build
 
 on:
+  push:
+    branches:
+      - fix_focus
   workflow_dispatch:
 
 jobs:
