@@ -26,9 +26,10 @@ import dev.aaa1115910.bv.entity.proxy.ProxyArea
 import dev.aaa1115910.bv.util.focusedBorder
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.runtime.remember
-import androidx.compose.ui.focus.Focusable
+import androidx.compose.foundation.focusable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.runtime.mutableStateOf
 
 @OptIn(ExperimentalTvMaterial3Api::class)
 @Composable
@@ -37,6 +38,7 @@ fun PgcCarousel(
     data: List<CarouselData.CarouselItem>
 ) {
     val context = LocalContext.current
+    var currentFocusedIndex by remember { mutableStateOf(0) }
     val focusRequester = remember { FocusRequester() }
 
     Box(
@@ -71,6 +73,7 @@ fun UgcCarousel(
     data: List<CarouselData.CarouselItem>
 ) {
     val context = LocalContext.current
+    var currentFocusedIndex by remember { mutableStateOf(0) }
     val focusRequester = remember { FocusRequester() }
 
     Box(
