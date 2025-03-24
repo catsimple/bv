@@ -38,7 +38,7 @@ fun PgcCarousel(
     data: List<CarouselData.CarouselItem>
 ) {
     val context = LocalContext.current
-    var currentFocusedIndex by remember { mutableStateOf(0) }
+    val currentFocusedIndex = remember { mutableStateOf(0) }
     val focusRequester = remember { FocusRequester() }
 
     Box(
@@ -59,8 +59,8 @@ fun PgcCarousel(
         )
     }
 
-    LaunchedEffect(currentFocusedIndex) {
-        if (currentFocusedIndex >= 0) {
+    LaunchedEffect(currentFocusedIndex.value) {
+        if (currentFocusedIndex.value >= 0) {
             focusRequester.requestFocus()
         }
     }
@@ -73,7 +73,7 @@ fun UgcCarousel(
     data: List<CarouselData.CarouselItem>
 ) {
     val context = LocalContext.current
-    var currentFocusedIndex by remember { mutableStateOf(0) }
+    val currentFocusedIndex = remember { mutableStateOf(0) }
     val focusRequester = remember { FocusRequester() }
 
     Box(
@@ -89,8 +89,8 @@ fun UgcCarousel(
         )
     }
 
-    LaunchedEffect(currentFocusedIndex) {
-        if (currentFocusedIndex >= 0) {
+    LaunchedEffect(currentFocusedIndex.value) {
+        if (currentFocusedIndex.value >= 0) {
             focusRequester.requestFocus()
         }
     }
