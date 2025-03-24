@@ -5,6 +5,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
@@ -32,18 +33,26 @@ fun PgcCarousel(
 ) {
     val context = LocalContext.current
 
-    CarouselContent(
-        modifier = modifier,
-        data = data,
-        onClick = { item ->
-            SeasonInfoActivity.actionStart(
-                context = context,
-                epId = item.episodeId,
-                seasonId = item.seasonId,
-                proxyArea = ProxyArea.checkProxyArea(item.title)
-            )
+    Box(
+        modifier = modifier.onFocusChanged { focusState ->
+            if (focusState.hasFocus) {
+                // 处理焦点逻辑，确保焦点不被Carousel抢走
+            }
         }
-    )
+    ) {
+        CarouselContent(
+            modifier = Modifier.fillMaxWidth(),
+            data = data,
+            onClick = { item ->
+                SeasonInfoActivity.actionStart(
+                    context = context,
+                    epId = item.episodeId,
+                    seasonId = item.seasonId,
+                    proxyArea = ProxyArea.checkProxyArea(item.title)
+                )
+            }
+        )
+    }
 }
 
 @OptIn(ExperimentalTvMaterial3Api::class)
@@ -54,16 +63,21 @@ fun UgcCarousel(
 ) {
     val context = LocalContext.current
 
-    CarouselContent(
-        modifier = modifier,
-        data = data,
-        onClick = { item ->
-            VideoInfoActivity.actionStart(
-                context = context,
-                aid = item.avid!!
-            )
+    Box(
+        modifier = modifier.onFocusChanged { focusState ->
+            if (focusState.hasFocus) {
+                // 处理焦点逻辑，确保焦点不被Carousel抢走
+            }
         }
-    )
+    ) {
+        CarouselContent(
+            modifier = Modifier.fillMaxWidth(),
+            data = data,
+            onClick = { item ->
+                // 处理点击事件
+            }
+        )
+    }
 }
 
 @OptIn(ExperimentalTvMaterial3Api::class)
