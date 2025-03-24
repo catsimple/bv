@@ -8,7 +8,12 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.focus.focusProperties
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -24,12 +29,6 @@ import dev.aaa1115910.bv.activities.video.SeasonInfoActivity
 import dev.aaa1115910.bv.activities.video.VideoInfoActivity
 import dev.aaa1115910.bv.entity.proxy.ProxyArea
 import dev.aaa1115910.bv.util.focusedBorder
-import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.runtime.remember
-import androidx.compose.foundation.focusable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.runtime.mutableStateOf
 
 @OptIn(ExperimentalTvMaterial3Api::class)
 @Composable
@@ -38,32 +37,19 @@ fun PgcCarousel(
     data: List<CarouselData.CarouselItem>
 ) {
     val context = LocalContext.current
-    val currentFocusedIndex = remember { mutableStateOf(0) }
-    val focusRequester = remember { FocusRequester() }
 
-    Box(
-        modifier = modifier
-            .focusable(false)
-    ) {
-        CarouselContent(
-            modifier = Modifier.fillMaxWidth(),
-            data = data,
-            onClick = { item ->
-                SeasonInfoActivity.actionStart(
-                    context = context,
-                    epId = item.episodeId,
-                    seasonId = item.seasonId,
-                    proxyArea = ProxyArea.checkProxyArea(item.title)
-                )
-            }
-        )
-    }
-
-    LaunchedEffect(currentFocusedIndex.value) {
-        if (currentFocusedIndex.value >= 0) {
-            focusRequester.requestFocus()
+    CarouselContent(
+        modifier = modifier,
+        data = data,
+        onClick = { item ->
+            SeasonInfoActivity.actionStart(
+                context = context,
+                epId = item.episodeId,
+                seasonId = item.seasonId,
+                proxyArea = ProxyArea.checkProxyArea(item.title)
+            )
         }
-    }
+    )
 }
 
 @OptIn(ExperimentalTvMaterial3Api::class)
@@ -73,27 +59,17 @@ fun UgcCarousel(
     data: List<CarouselData.CarouselItem>
 ) {
     val context = LocalContext.current
-    val currentFocusedIndex = remember { mutableStateOf(0) }
-    val focusRequester = remember { FocusRequester() }
 
-    Box(
-        modifier = modifier
-            .focusable(false)
-    ) {
-        CarouselContent(
-            modifier = Modifier.fillMaxWidth(),
-            data = data,
-            onClick = { item ->
-                // 处理点击事件
-            }
-        )
-    }
-
-    LaunchedEffect(currentFocusedIndex.value) {
-        if (currentFocusedIndex.value >= 0) {
-            focusRequester.requestFocus()
+    CarouselContent(
+        modifier = modifier,
+        data = data,
+        onClick = { item ->
+            VideoInfoActivity.actionStart(
+                context = context,
+                aid = item.avid!!
+            )
         }
-    }
+    )
 }
 
 @OptIn(ExperimentalTvMaterial3Api::class)
@@ -103,21 +79,35 @@ fun CarouselContent(
     data: List<CarouselData.CarouselItem>,
     onClick: (CarouselData.CarouselItem) -> Unit
 ) {
-    Carousel(
-        itemCount = data.size,
+    var isBoxSelected by remember { mutableStateOf(false) }
+
+    Box(
         modifier = modifier
-            .height(240.dp)
-            .clip(MaterialTheme.shapes.large)
-            .focusedBorder(),
-        contentTransformEndToStart =
-        fadeIn(tween(1000)).togetherWith(fadeOut(tween(1000))),
-        contentTransformStartToEnd =
-        fadeIn(tween(1000)).togetherWith(fadeOut(tween(1000)))
-    ) { itemIndex ->
-        CarouselCard(
-            data = data[itemIndex],
-            onClick = { onClick(data[itemIndex]) }
-        )
+            .focusable()
+            .onFocusChanged { focusState ->
+                isBoxSelected = focusState.hasFocus
+            }
+            .clickable { isBoxSelected = !isBoxSelected }
+    ) {
+        Carousel(
+            itemCount = data.size,
+            modifier = Modifier
+                .height(240.dp)
+                .clip(MaterialTheme.shapes.large)
+                .focusedBorder()
+                .focusProperties {
+                    isFocusable = isBoxSelected
+                },
+            contentTransformEndToStart =
+            fadeIn(tween(1000)).togetherWith(fadeOut(tween(1000))),
+            contentTransformStartToEnd =
+            fadeIn(tween(1000)).togetherWith(fadeOut(tween(1000)))
+        ) { itemIndex ->
+            CarouselCard(
+                data = data[itemIndex],
+                onClick = { onClick(data[itemIndex]) }
+            )
+        }
     }
 }
 
