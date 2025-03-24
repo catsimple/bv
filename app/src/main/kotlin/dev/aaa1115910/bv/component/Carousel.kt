@@ -89,7 +89,6 @@ fun CarouselContent(
             .onFocusChanged { focusState ->
                 isBoxSelected = focusState.hasFocus
             }
-            .clickable { isBoxSelected = !isBoxSelected }
     ) {
         Carousel(
             itemCount = data.size,
