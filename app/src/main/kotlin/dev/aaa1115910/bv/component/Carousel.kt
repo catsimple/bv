@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.focusable
-import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.focus.focusProperties
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,6 +20,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.focus.focusProperties
+import androidx.compose.ui.focus.FocusRequester
 import androidx.tv.material3.Carousel
 import androidx.tv.material3.ExperimentalTvMaterial3Api
 import androidx.tv.material3.MaterialTheme
@@ -82,12 +83,16 @@ fun CarouselContent(
     onClick: (CarouselData.CarouselItem) -> Unit
 ) {
     var isBoxSelected by remember { mutableStateOf(false) }
+    val carouselFocusRequester = remember { FocusRequester() } 
 
     Box(
         modifier = modifier
             .focusable()
             .onFocusChanged { focusState ->
-                isBoxSelected = focusState.hasFocus
+                isBoxSelected = focusState.isFocused
+                if (isBoxSelected) {
+                    carouselFocusRequester.requestFocus()
+                }
             }
     ) {
         Carousel(
@@ -96,6 +101,7 @@ fun CarouselContent(
                 .height(240.dp)
                 .clip(MaterialTheme.shapes.large)
                 .focusedBorder()
+                .focusRequester(carouselFocusRequester)
                 .focusProperties {
                     canFocus = isBoxSelected
                 },
