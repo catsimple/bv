@@ -14,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -84,9 +85,16 @@ fun CarouselContent(
     onClick: (CarouselData.CarouselItem) -> Unit
 ) {
     var isBoxSelected by remember { mutableStateOf(false) }
-    val carouselContainerFocusRequester = remember { FocusRequester() } 
-    val cardFocusRequesters = remember { 
-        List(data.size) { FocusRequester() }.toMutableList()
+    val carouselContainerFocusRequester = remember { FocusRequester() }
+
+    val cardFocusRequesters by remember(data) {
+        derivedStateOf {
+            if (data.isNotEmpty()) {
+                List(data.size) { FocusRequester() }.toMutableList()
+            } else {
+                mutableListOf()
+            }
+        }
     }
 
     Box(
@@ -95,12 +103,12 @@ fun CarouselContent(
             .onFocusChanged { focusState ->
                 isBoxSelected = (focusState.isFocused || focusState.hasFocus)
                 if (isBoxSelected) {
-                    if (cardFocusRequesters.isNotEmpty()) { 
-                        cardFocusRequesters.first().requestFocus() 
+                    if (cardFocusRequesters.isNotEmpty()) {
+                        cardFocusRequesters.firstOrNull()?.requestFocus()
                     }
                 }
             }
-            .focusRequester(carouselContainerFocusRequester) // Box 使用这个 FocusRequester
+            .focusRequester(carouselContainerFocusRequester)
     ) {
         Carousel(
             itemCount = data.size,
@@ -116,10 +124,11 @@ fun CarouselContent(
             contentTransformStartToEnd =
             fadeIn(tween(1000)).togetherWith(fadeOut(tween(1000)))
         ) { itemIndex ->
+            val focusRequester = cardFocusRequesters.getOrNull(itemIndex) ?: remember { FocusRequester() }
             CarouselCard(
                 data = data[itemIndex],
                 onClick = { onClick(data[itemIndex]) },
-                focusRequester = cardFocusRequesters[itemIndex] // 将对应的 FocusRequester 传递给 CarouselCard
+                focusRequester = focusRequester
             )
         }
     }
@@ -131,15 +140,15 @@ fun CarouselCard(
     modifier: Modifier = Modifier,
     data: CarouselData.CarouselItem,
     onClick: () -> Unit = {},
-    focusRequester: FocusRequester // 新增 focusRequester 参数
+    focusRequester: FocusRequester
 ) {
     AsyncImage(
         modifier = modifier
             .fillMaxWidth()
             .clip(MaterialTheme.shapes.large)
             .clickable { onClick() }
-            .focusRequester(focusRequester) // 应用 FocusRequester
-            .focusable(), // 显式声明 focusable
+            .focusRequester(focusRequester)
+            .focusable(),
         model = data.cover,
         contentDescription = null,
         contentScale = ContentScale.Crop,
