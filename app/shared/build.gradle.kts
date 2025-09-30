@@ -3,7 +3,6 @@ import java.net.URI
 plugins {
     alias(gradleLibs.plugins.android.library)
     alias(gradleLibs.plugins.compose.compiler)
-    alias(gradleLibs.plugins.firebase.crashlytics)
     alias(gradleLibs.plugins.google.ksp)
     alias(gradleLibs.plugins.google.protobuf)
     alias(gradleLibs.plugins.google.services) apply false
@@ -101,6 +100,7 @@ java {
 dependencies {
     annotationProcessor(androidx.room.compiler)
     ksp(androidx.room.compiler)
+    ksp(libs.koin.ksp.compiler)
     api(platform("${libs.firebase.bom.get()}"))
     api(androidx.activity.compose)
     api(androidx.core.ktx)
@@ -135,10 +135,11 @@ dependencies {
     api(libs.coil.compose)
     api(libs.coil.gif)
     api(libs.coil.svg)
-    api(libs.firebase.analytics.ktx)
-    api(libs.firebase.crashlytics.ktx)
+    api(libs.firebase.analytics)
+    api(libs.firebase.crashlytics)
     api(libs.geetest.sensebot)
     api(libs.koin.android)
+    api(libs.koin.annotations)
     api(libs.koin.compose)
     api(libs.koin.compose.navigation)
     api(libs.kotlinx.serialization)
@@ -206,10 +207,4 @@ tasks.register("downloadBlacklist") {
 
 tasks.named("preBuild").configure {
     dependsOn("downloadBlacklist")
-}
-
-configurations {
-    implementation {
-        exclude("androidx.media3", "media3-container")
-    }
 }

@@ -22,8 +22,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
+import org.koin.core.annotation.Single
 import bilibili.pgc.gateway.player.v2.PlayURLGrpcKt as PgcPlayURLGrpcKt
 
+@Single
 class VideoPlayRepository(
     private val authRepository: AuthRepository,
     private val channelRepository: ChannelRepository
@@ -207,10 +209,12 @@ class VideoPlayRepository(
                 val response = BiliHttpApi.getVideoMoreInfo(
                     avid = aid,
                     cid = cid,
-                    sessData = authRepository.sessionData ?: ""
+                    sessData = authRepository.sessionData ?: "",
+                    buvid3 = authRepository.buvid3 ?: ""
                 ).getResponseData()
-                response.subtitle.subtitles
-                    .map { Subtitle.fromSubtitleItem(it) }
+                response.subtitle?.subtitles
+                    ?.map { Subtitle.fromSubtitleItem(it) }
+                    ?: emptyList()
             }
 
             ApiType.App -> {
@@ -275,7 +279,8 @@ class VideoPlayRepository(
                 val response = BiliHttpApi.getVideoMoreInfo(
                     avid = aid,
                     cid = cid,
-                    sessData = authRepository.sessionData ?: ""
+                    sessData = authRepository.sessionData ?: "",
+                    buvid3 = authRepository.buvid3 ?: ""
                 ).getResponseData()
                 response.dmMask?.maskUrl
             }

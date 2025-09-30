@@ -18,11 +18,17 @@ interface SearchHistoryDao {
     @Query("SELECT * FROM search_history WHERE keyword = :keyword LIMIT 1")
     suspend fun findHistory(keyword: String): SearchHistoryDB?
 
+    @Query("SELECT * FROM search_history WHERE keyword LIKE '%' || :keyword || '%' LIMIT :count")
+    suspend fun findHistories(keyword: String, count: Int): List<SearchHistoryDB>
+
     @Insert
     suspend fun insert(vararg searchHistoryDB: SearchHistoryDB)
 
     @Delete
     suspend fun delete(vararg searchHistoryDB: SearchHistoryDB)
+
+    @Query("DELETE FROM search_history")
+    suspend fun deleteAll()
 
     @Update
     suspend fun update(searchHistoryDB: SearchHistoryDB)

@@ -4,13 +4,6 @@ pluginManagement {
         mavenCentral()
         gradlePluginPortal()
     }
-    resolutionStrategy {
-        eachPlugin {
-            when (requested.id.name) {
-                "crashlytics" -> useModule("com.google.firebase:firebase-crashlytics-gradle:2.9.9")
-            }
-        }
-    }
 }
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
@@ -32,12 +25,11 @@ include(":app:mobile")
 include(":app:shared")
 include(":app:tv")
 include(":bili-api")
+include(":bili-api:grpc")
 include(":bili-subtitle")
 include(":libs:av1Decoder")
 include(":libs:ffmpegDecoder")
 include(":libs:libVLC")
-include(":libs:media3Container")
-include(":bili-api-grpc")
 include(":player")
 include(":player:core")
 include(":player:mobile")

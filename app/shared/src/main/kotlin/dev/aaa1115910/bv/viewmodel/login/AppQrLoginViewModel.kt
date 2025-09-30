@@ -20,23 +20,25 @@ import dev.aaa1115910.bv.util.fError
 import dev.aaa1115910.bv.util.fInfo
 import dev.aaa1115910.bv.util.timeTask
 import dev.aaa1115910.bv.util.toast
-import io.github.g0dkar.qrcode.QRCode
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.koin.android.annotation.KoinViewModel
+import qrcode.QRCode
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.util.Timer
 
+@KoinViewModel
 class AppQrLoginViewModel(
     private val userRepository: UserRepository,
     private val loginRepository: LoginRepository
 ) : ViewModel() {
     var state by mutableStateOf(QrLoginState.Ready)
     private val logger = KotlinLogging.logger { }
-    private var loginUrl by mutableStateOf("")
+    var loginUrl by mutableStateOf("")
     var qrImage by mutableStateOf(ImageBitmap(1, 1, ImageBitmapConfig.Argb8888))
     private var key = ""
 

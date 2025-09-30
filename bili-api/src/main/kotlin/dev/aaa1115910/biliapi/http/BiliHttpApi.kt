@@ -2,6 +2,7 @@ package dev.aaa1115910.biliapi.http
 
 import com.tfowl.ktor.client.plugins.JsoupPlugin
 import dev.aaa1115910.biliapi.entity.pgc.PgcType
+import dev.aaa1115910.biliapi.http.BiliHttpApi.getRegionDynamic
 import dev.aaa1115910.biliapi.http.entity.BiliResponse
 import dev.aaa1115910.biliapi.http.entity.BiliResponseWithoutData
 import dev.aaa1115910.biliapi.http.entity.danmaku.DanmakuData
@@ -359,10 +360,12 @@ object BiliHttpApi {
     suspend fun getDynamicDetail(
         timezoneOffset: Int = -480,
         id: String,
+        features: String? = null,
         sessData: String = ""
     ): BiliResponse<DynamicDetailData> = client.get("/x/polymer/web-dynamic/v1/detail") {
         parameter("timezone_offset", timezoneOffset)
         parameter("id", id)
+        features?.let { parameter("features", it) }
         header("Cookie", "SESSDATA=$sessData;")
     }.body()
 
@@ -643,11 +646,12 @@ object BiliHttpApi {
     suspend fun getVideoMoreInfo(
         avid: Long,
         cid: Long,
-        sessData: String
-    ): BiliResponse<VideoMoreInfo> = client.get("/x/player/v2") {
+        sessData: String,
+        buvid3: String
+    ): BiliResponse<VideoMoreInfo> = client.get("/x/player/wbi/v2") {
         parameter("aid", avid)
         parameter("cid", cid)
-        header("Cookie", "SESSDATA=$sessData;")
+        header("Cookie", "buvid3=$buvid3; SESSDATA=$sessData;")
     }.body()
 
     /**
